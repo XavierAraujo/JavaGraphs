@@ -5,6 +5,11 @@ class Vertex {
     private long id;
     private Object data;
 
+    Vertex(long id) {
+        this.id = id;
+        this.data = null;
+    }
+
     Vertex(long id, Object data) {
         this.id = id;
         this.data = data;
