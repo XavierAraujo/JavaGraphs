@@ -134,25 +134,22 @@ public interface Graph {
         ArrayDeque<Vertex> visitationQueue = new ArrayDeque<>();
 
         visitationQueue.add(startingVertex);
+        visitationMap.add(startingVertex);
+
         while (visitationQueue.size() > 0)
         {
             Vertex vertex = visitationQueue.pollFirst();
-            if (visitationMap.contains(vertex)) {
-                continue;
-            }
-
-            visitationMap.add(vertex);
             vertices.add(vertex);
 
             List<Vertex> neighbors = getNeighbors(vertex);
-            for (Vertex neighbor: neighbors)
+            for(Vertex neighbor : neighbors)
             {
-                if (! visitationMap.contains(vertex)) {
-                    continue;
+                if (!visitationMap.contains(neighbor)) {
+                    // Only add vertices which were not yet added to the queue
+                    visitationQueue.add(neighbor);
+                    visitationMap.add(neighbor);
                 }
-                visitationQueue.add(neighbor);
             }
-
         }
 
         return vertices;
