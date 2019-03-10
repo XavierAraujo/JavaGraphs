@@ -150,5 +150,77 @@ class UndirectedAdjacentListGraphTest {
         assertFalse(graph.isNeighbor(v9, v7));
         assertFalse(graph.isNeighbor(v9, v8));
 
+        //
+        // Test Depth First Search
+        //
+
+        List<Vertex> vertices = graph.depthFirstSearch(v0);
+        assertEquals(9, vertices.size());
+
+        assertEquals(0, vertices.get(0).getId());
+        assertEquals(3, vertices.get(1).getId());
+        assertEquals(7, vertices.get(2).getId());
+        assertEquals(5, vertices.get(3).getId());
+        assertEquals(1, vertices.get(4).getId());
+        assertEquals(6, vertices.get(5).getId());
+        assertEquals(8, vertices.get(6).getId());
+        assertEquals(2, vertices.get(7).getId());
+        assertEquals(9, vertices.get(8).getId());
+
+        // The vertex 4 is disconnected from the rest of graph
+        // so it should not appear when the DFS algorithm starts
+        // on the vertex 0
+
+        vertices = graph.depthFirstSearch(v4);
+        assertEquals(1, vertices.size());
+        assertEquals(4, vertices.get(0).getId());
+
+        vertices = graph.depthFirstSearch(v2);
+        assertEquals(9, vertices.size());
+
+        assertEquals(2, vertices.get(0).getId());
+        assertEquals(8, vertices.get(1).getId());
+        assertEquals(3, vertices.get(2).getId());
+        assertEquals(0, vertices.get(3).getId());
+        assertEquals(5, vertices.get(4).getId());
+        assertEquals(1, vertices.get(5).getId());
+        assertEquals(6, vertices.get(6).getId());
+        assertEquals(7, vertices.get(7).getId());
+        assertEquals(9, vertices.get(8).getId());
+
+        //
+        // Test Breadth First Search
+        //
+
+        vertices = graph.breadthFirstSearch(v0);
+        assertEquals(9, vertices.size());
+
+        assertEquals(0, vertices.get(0).getId());
+        assertEquals(3, vertices.get(1).getId());
+        assertEquals(5, vertices.get(2).getId());
+        assertEquals(6, vertices.get(3).getId());
+        assertEquals(9, vertices.get(4).getId());
+        assertEquals(7, vertices.get(5).getId());
+        assertEquals(8, vertices.get(6).getId());
+        assertEquals(1, vertices.get(7).getId());
+        assertEquals(2, vertices.get(8).getId());
+
+        vertices = graph.breadthFirstSearch(v4);
+        assertEquals(1, vertices.size());
+        assertEquals(4, vertices.get(0).getId());
+
+        vertices = graph.breadthFirstSearch(v2);
+        assertEquals(9, vertices.size());
+
+        assertEquals(2, vertices.get(0).getId());
+        assertEquals(8, vertices.get(1).getId());
+        assertEquals(3, vertices.get(2).getId());
+        assertEquals(0, vertices.get(3).getId());
+        assertEquals(7, vertices.get(4).getId());
+        assertEquals(5, vertices.get(5).getId());
+        assertEquals(6, vertices.get(6).getId());
+        assertEquals(9, vertices.get(7).getId());
+        assertEquals(1, vertices.get(8).getId());
+
     }
 }

@@ -58,4 +58,8 @@ public interface Graph {
      *         any of the specified vertices does not exist.
      */
     void removeEdge(Vertex origin, Vertex destination) throws VertexNotFoundException;
+
+    List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
+
+    List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
 }

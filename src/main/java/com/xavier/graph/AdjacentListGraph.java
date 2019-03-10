@@ -1,8 +1,6 @@
 package com.xavier.graph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 abstract class AdjacentListGraph implements Graph {
 
@@ -89,5 +87,73 @@ abstract class AdjacentListGraph implements Graph {
                 break;
             }
         }
+    }
+
+    public List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    {
+        if ( !connections.containsKey(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        HashSet<Vertex> visitationMap = new HashSet<>();
+        return recursiveDepthFirstSearch(startingVertex, visitationMap);
+    }
+
+    private List<Vertex> recursiveDepthFirstSearch(Vertex vertex, HashSet<Vertex> visitationMap) throws VertexNotFoundException
+    {
+        List<Vertex> vertices = new ArrayList<>();
+
+        // Add current vertex and mark it as visited.
+        vertices.add(vertex);
+        visitationMap.add(vertex);
+
+        List<Vertex> neighbors = getNeighbors(vertex);
+        for (Vertex neighbor: neighbors)
+        {
+            if (visitationMap.contains(neighbor)) {
+                // This vertex was already visited so we don't need to visit again
+                continue;
+            }
+            List<Vertex> neighborVertices = recursiveDepthFirstSearch(neighbor, visitationMap);
+            vertices.addAll(neighborVertices);
+        }
+
+        return vertices;
+    }
+
+    public List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    {
+        if ( !connections.containsKey(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        List<Vertex> vertices = new ArrayList<>();
+        HashSet<Vertex> visitationMap = new HashSet<>();
+        ArrayDeque<Vertex> visitationQueue = new ArrayDeque<>();
+
+        visitationQueue.add(startingVertex);
+
+        while (visitationQueue.size() > 0)
+        {
+            Vertex vertex = visitationQueue.pollFirst();
+            if (visitationMap.contains(vertex)) {
+                continue;
+            }
+
+            visitationMap.add(vertex);
+            vertices.add(vertex);
+
+            List<Vertex> neighbors = getNeighbors(vertex);
+            for (Vertex neighbor: neighbors)
+            {
+                if (! visitationMap.contains(vertex)) {
+                    continue;
+                }
+                visitationQueue.add(neighbor);
+            }
+
+        }
+
+        return vertices;
     }
 }
