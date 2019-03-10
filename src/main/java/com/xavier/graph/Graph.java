@@ -5,6 +5,14 @@ import java.util.List;
 public interface Graph {
 
     /**
+     * This method checks if a given vertex is present in the graph.
+     * @param vertex Vertex to be evaluated.
+     * @return Returns true if the given vertex is present in the graph
+     *          and false otherwise.
+     */
+    boolean isVertexInGraph(Vertex vertex);
+
+    /**
      * Checks if there is a connection between the given vertices.
      * @param origin Origin vertex.
      * @param destination Destination vertex.
@@ -59,7 +67,25 @@ public interface Graph {
      */
     void removeEdge(Vertex origin, Vertex destination) throws VertexNotFoundException;
 
+    /**
+     * This method iterates the graph using the Depth First Search
+     * algorithm.
+     * @param startingVertex Initial vertex from where the iteration
+     *                       should begin.
+     * @return Returns the list of vertices iterated.
+     * @throws VertexNotFoundException Throws this exception if the
+     *          starting vertex is not found.
+     */
     List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
 
+    /**
+     * This method iterates the graph using the Breadth First Search
+     * algorithm.
+     * @param startingVertex Initial vertex from where the iteration
+     *                       should begin.
+     * @return Returns the list of vertices iterated.
+     * @throws VertexNotFoundException Throws this exception if the
+     *          starting vertex is not found.
+     */
     List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
 }

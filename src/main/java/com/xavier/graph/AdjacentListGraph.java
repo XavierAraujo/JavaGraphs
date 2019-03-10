@@ -10,10 +10,16 @@ abstract class AdjacentListGraph implements Graph {
         connections = new HashMap<>();
     }
 
+
+    public boolean isVertexInGraph(Vertex vertex)
+    {
+        return connections.containsKey(vertex);
+    }
+
     public boolean isNeighbor(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if ( !connections.containsKey(origin) ||
-                !connections.containsKey(destination)) {
+        if ( !isVertexInGraph(origin) ||
+                !isVertexInGraph(destination)) {
             throw new VertexNotFoundException();
         }
 
@@ -30,7 +36,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public List<Vertex> getNeighbors(Vertex vertex) throws VertexNotFoundException
     {
-        if (! connections.containsKey(vertex)) {
+        if (! isVertexInGraph(vertex)) {
             throw new VertexNotFoundException();
         }
 
@@ -46,7 +52,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public void addVertex(Vertex vertex)
     {
-        if (connections.containsKey(vertex)) {
+        if (isVertexInGraph(vertex)) {
             return;
         }
 
@@ -55,7 +61,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public void removeVertex(Vertex vertex)
     {
-        if (! connections.containsKey(vertex)) {
+        if (! isVertexInGraph(vertex)) {
             return;
         }
 
@@ -64,8 +70,8 @@ abstract class AdjacentListGraph implements Graph {
 
     public void addEdge(Edge edge) throws VertexNotFoundException
     {
-        if ( !connections.containsKey(edge.origin) ||
-                !connections.containsKey(edge.destination)) {
+        if ( !isVertexInGraph(edge.origin) ||
+                !isVertexInGraph(edge.destination)) {
             throw new VertexNotFoundException();
         }
 
@@ -75,8 +81,8 @@ abstract class AdjacentListGraph implements Graph {
 
     public void removeEdge(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if ( !connections.containsKey(origin) ||
-                !connections.containsKey(destination)) {
+        if ( !isVertexInGraph(origin) ||
+                !isVertexInGraph(destination)) {
             throw new VertexNotFoundException();
         }
 
@@ -91,12 +97,42 @@ abstract class AdjacentListGraph implements Graph {
 
     public List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !connections.containsKey(startingVertex)) {
+        if ( !isVertexInGraph(startingVertex)) {
             throw new VertexNotFoundException();
         }
 
+        List<Vertex> vertices = new ArrayList<>();
         HashSet<Vertex> visitationMap = new HashSet<>();
-        return recursiveDepthFirstSearch(startingVertex, visitationMap);
+        ArrayDeque<Vertex> visitationStack = new ArrayDeque<>();
+
+        visitationStack.push(startingVertex);
+
+        while (visitationStack.size() > 0)
+        {
+            Vertex vertex = visitationStack.pop();
+            if (visitationMap.contains(vertex)) {
+                continue;
+            }
+
+            visitationMap.add(vertex);
+            vertices.add(vertex);
+
+            List<Vertex> neighbors = getNeighbors(vertex);
+
+            // Use an iterator to iterate the vertex list in reverse order
+            // to consider the most first neighbors being inserted.
+            ListIterator it = neighbors.listIterator(neighbors.size());
+            while (it.hasPrevious()) {
+                Vertex neighbor = (Vertex) it.previous();
+                if (! visitationMap.contains(vertex)) {
+                    continue;
+                }
+                visitationStack.push(neighbor);
+            }
+
+        }
+
+        return vertices;
     }
 
     private List<Vertex> recursiveDepthFirstSearch(Vertex vertex, HashSet<Vertex> visitationMap) throws VertexNotFoundException
@@ -123,7 +159,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !connections.containsKey(startingVertex)) {
+        if ( !isVertexInGraph(startingVertex)) {
             throw new VertexNotFoundException();
         }
 
