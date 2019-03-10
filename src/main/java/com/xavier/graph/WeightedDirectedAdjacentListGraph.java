@@ -23,88 +23,133 @@ public class WeightedDirectedAdjacentListGraph extends DirectedAdjacentListGraph
      * @param destination Destination vertex.
      * @return Returns the list of vertices that form the minimum
      *         cost path.
-     * @throws VertexNotFoundException T
+     * @throws VertexNotFoundException Throws this exception if any
+     *          of the vertices does not exist in the graph.
      */
-    public WeightedGraphPath findMinimumCostPath(Vertex origin, Vertex destination) throws VertexNotFoundException
+    WeightedGraphPath findMinimumCostPath(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if (!contains(origin) ||
-                !contains(destination)) {
+        if (!contains(origin) || !contains(destination)) {
             throw new VertexNotFoundException();
         }
 
         // TODO: Try to use Fibonacci Heap to allow efficient min retrieval and weight update
-        HashSet<Vertex> vertices = new HashSet<>();
-        HashMap<Vertex, Integer> weights = new HashMap<>();
-        HashMap<Vertex, Vertex> previousVertices = new HashMap<>();
+        HashMap<Vertex, DijkstraInfo> verticesMap = new HashMap<>();
 
         // Initialize unvisited vertices and update weight of origin node to 0
-        List<Vertex> graphVertices = getVertices();
-        for(Vertex vertex : graphVertices) {
-            vertices.add(vertex);
-            weights.put(vertex, Integer.MAX_VALUE);
-            previousVertices.put(vertex, null);
+        List<Vertex> vertices = getVertices();
+        for(Vertex vertex : vertices) {
+            verticesMap.put(vertex, new DijkstraInfo());
         }
 
-        weights.put(origin, 0);
+        verticesMap.get(origin).setWeight(0);
 
-        // Iterate while there still exist non-visited vertices.
-        while (vertices.size() > 0 )
+        int unvisitedNodes = vertices.size();
+        while (unvisitedNodes > 0 )
         {
-            // Set the non-visited vertex with the smallest current weight as the current vertex C.
-            Vertex currentVertex = getMinWeightUnvisitedVertex(vertices, weights);
-            int currentVertexWeight = weights.get(currentVertex);
+            Vertex currentVertex = getMinWeightUnvisitedVertex(verticesMap);
+            int currentVertexWeight = verticesMap.get(currentVertex).getWeight();
 
-            // For each neighbour N of your current node C: add the current weight of C with the
-            // weight of the edge connecting C-N. If it's smaller than the current weight of N, set
-            // it as the new current weight of N.
             List<Edge> edges = getEdges(currentVertex);
             for (Edge edge : edges) {
                 Vertex neighbor = edge.destination;
-                int neighborWeight = weights.get(neighbor);
+                DijkstraInfo neighborInfo = verticesMap.get(neighbor);
+
+                int neighborWeight = neighborInfo.getWeight();
                 int newWeight = currentVertexWeight + ((WeightedEdge) edge).getWeight();
 
                 if (newWeight < neighborWeight) {
-                    weights.put(neighbor, newWeight);
-                    previousVertices.put(neighbor, currentVertex);
+                    verticesMap.get(neighbor).setWeight(newWeight);
+                    verticesMap.get(neighbor).setPreviousVertex(currentVertex);
                 }
 
             }
 
-            // Mark the current vertex C as visited.
-            vertices.remove(currentVertex);
+            verticesMap.get(currentVertex).setVisited(true);
+            unvisitedNodes -= 1;
 
-            if (currentVertex.equals(destination)
-                && weights.get(destination) < Integer.MAX_VALUE) {
+            if (currentVertex.equals(destination)) {
                 // We found the destination. No need to continue evaluating
-                WeightedGraphPath path = new WeightedGraphPath();
-
-                path.setWeight(weights.get(destination));
-
-                Vertex vertex = destination;
-                while (vertex != null) {
-                    path.addVertex(vertex);
-                    vertex = previousVertices.get(vertex);
-                }
-
-                return path;
+                return buildPathToDestination(verticesMap, destination);
             }
         }
 
         return null;
     }
 
-    private Vertex getMinWeightUnvisitedVertex(HashSet<Vertex> vertices, HashMap<Vertex, Integer> weights)
+    private Vertex getMinWeightUnvisitedVertex(HashMap<Vertex, DijkstraInfo> verticesMap)
     {
         // TODO: Very inefficient. Change to Fibonacci Heap
-        int minDistance = Integer.MAX_VALUE;
+        int minWeight = Integer.MAX_VALUE;
         Vertex vertex = null;
-        for (Vertex v : vertices) {
-            int distance = weights.get(v);
-            if (distance <= minDistance) {
-                vertex = v;
-                minDistance = distance;
+
+        for (Map.Entry<Vertex, DijkstraInfo> entry : verticesMap.entrySet()) {
+            if (entry.getValue().getIsVisited()) {
+                continue; // Only consider unvisited nodes
+            }
+
+            int weight = entry.getValue().getWeight();
+            if (weight <= minWeight) {
+                vertex = entry.getKey();
+                minWeight = weight;
             }
         }
+
         return vertex;
+    }
+
+    private WeightedGraphPath buildPathToDestination(HashMap<Vertex, DijkstraInfo> verticesMap, Vertex destination)
+    {
+        if (verticesMap.get(destination).getWeight() == Integer.MAX_VALUE) {
+            return null;
+        }
+
+        int pathWeight = verticesMap.get(destination).getWeight();
+
+        ArrayList<Vertex> verticesPath = new ArrayList<>();
+        Vertex vertex = destination;
+        while (vertex != null) {
+            verticesPath.add(vertex);
+            vertex = verticesMap.get(vertex).getPreviousVertex();
+        }
+
+        return new WeightedGraphPath(pathWeight, verticesPath);
+    }
+
+    class DijkstraInfo
+    {
+        private boolean isVisited;
+        private int weight;
+        private Vertex previousVertex;
+
+        DijkstraInfo()
+        {
+            isVisited = false;
+            weight = Integer.MAX_VALUE;
+            previousVertex = null;
+        }
+
+        boolean getIsVisited() {
+            return isVisited;
+        }
+
+        void setVisited(boolean visited) {
+            isVisited = visited;
+        }
+
+        int getWeight() {
+            return weight;
+        }
+
+        void setWeight(int weight) {
+            this.weight = weight;
+        }
+
+        Vertex getPreviousVertex() {
+            return previousVertex;
+        }
+
+        void setPreviousVertex(Vertex previousVertex) {
+            this.previousVertex = previousVertex;
+        }
     }
 }

@@ -8,16 +8,9 @@ public class WeightedGraphPath {
     private int weight;
     private List<Vertex> path;
 
-    WeightedGraphPath() {
-        path = new ArrayList<>();
-    }
-
-    void addVertex(Vertex vertex) {
-        path.add(vertex);
-    }
-
-    void setWeight(int weight) {
+    WeightedGraphPath(int weight, List<Vertex> path) {
         this.weight = weight;
+        this.path = path;
     }
 
     int getWeight() {
@@ -31,7 +24,7 @@ public class WeightedGraphPath {
     @Override
     public String toString()
     {
-        if (path != null && path.size() == 0) {
+        if (path != null || path.size() == 0) {
             return "Empty Path";
         }
 

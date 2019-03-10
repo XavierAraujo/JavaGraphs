@@ -18,7 +18,7 @@ public interface Graph {
      * @param destination Destination vertex.
      * @return Returns true if there is an edge between the origin
      *         vertex and the destination vertex and false otherwise.
-     * @throws VertexNotFoundException  Throws this exception if any
+     * @throws VertexNotFoundException Throws this exception if any
      *         of the vertices does not exist in the graph.
      *
      */

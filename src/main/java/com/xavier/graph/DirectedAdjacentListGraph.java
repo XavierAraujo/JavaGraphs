@@ -10,6 +10,6 @@ class DirectedAdjacentListGraph extends AdjacentListGraph {
      */
     void addEdge(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        addEdge(new Edge(origin, destination));
+        super.addEdge(new Edge(origin, destination));
     }
 }
