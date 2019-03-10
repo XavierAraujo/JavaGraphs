@@ -1,6 +1,6 @@
 package com.xavier.graph;
 
-import java.util.List;
+import java.util.*;
 
 public interface Graph {
 
@@ -76,7 +76,43 @@ public interface Graph {
      * @throws VertexNotFoundException Throws this exception if the
      *          starting vertex is not found.
      */
-    List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
+    default List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    {
+        if ( !isVertexInGraph(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        List<Vertex> vertices = new ArrayList<>();
+        HashSet<Vertex> visitationMap = new HashSet<>();
+        ArrayDeque<Vertex> visitationStack = new ArrayDeque<>();
+
+        visitationStack.push(startingVertex);
+        while (visitationStack.size() > 0)
+        {
+            Vertex vertex = visitationStack.pop();
+            if (visitationMap.contains(vertex)) {
+                continue;
+            }
+
+            visitationMap.add(vertex);
+            vertices.add(vertex);
+
+            List<Vertex> neighbors = getNeighbors(vertex);
+
+            // Use an iterator to iterate the vertex list in reverse order
+            // to consider the most first neighbors being inserted.
+            ListIterator it = neighbors.listIterator(neighbors.size());
+            while (it.hasPrevious()) {
+                Vertex neighbor = (Vertex) it.previous();
+                if (! visitationMap.contains(vertex)) {
+                    continue;
+                }
+                visitationStack.push(neighbor);
+            }
+        }
+
+        return vertices;
+    }
 
     /**
      * This method iterates the graph using the Breadth First Search
@@ -87,5 +123,38 @@ public interface Graph {
      * @throws VertexNotFoundException Throws this exception if the
      *          starting vertex is not found.
      */
-    List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException;
+    default List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    {
+        if ( !isVertexInGraph(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        List<Vertex> vertices = new ArrayList<>();
+        HashSet<Vertex> visitationMap = new HashSet<>();
+        ArrayDeque<Vertex> visitationQueue = new ArrayDeque<>();
+
+        visitationQueue.add(startingVertex);
+        while (visitationQueue.size() > 0)
+        {
+            Vertex vertex = visitationQueue.pollFirst();
+            if (visitationMap.contains(vertex)) {
+                continue;
+            }
+
+            visitationMap.add(vertex);
+            vertices.add(vertex);
+
+            List<Vertex> neighbors = getNeighbors(vertex);
+            for (Vertex neighbor: neighbors)
+            {
+                if (! visitationMap.contains(vertex)) {
+                    continue;
+                }
+                visitationQueue.add(neighbor);
+            }
+
+        }
+
+        return vertices;
+    }
 }
