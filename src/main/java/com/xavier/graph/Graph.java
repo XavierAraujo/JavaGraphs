@@ -10,7 +10,7 @@ public interface Graph {
      * @return Returns true if the given vertex is present in the graph
      *          and false otherwise.
      */
-    boolean isVertexInGraph(Vertex vertex);
+    boolean contains(Vertex vertex);
 
     /**
      * Checks if there is a connection between the given vertices.
@@ -27,12 +27,18 @@ public interface Graph {
     /**
      * Lists all the neighbours of the given vertex.
      * @param vertex Vertex to evaluate.
-     * @return Returns the list of the neighbors. If the given node
-     *         does not exist on the graph this method returns null.
+     * @return Returns the list of the neighbors.
      * @throws VertexNotFoundException  Throws this exception if the
      *         given vertex does not exist in the graph.
      */
     List<Vertex> getNeighbors(Vertex vertex) throws VertexNotFoundException;
+
+    /**
+     * This method allows to retrieve a list containing all the graph's
+     * vertices.
+     * @return Returns a list containing all the graph's vertices.
+     */
+    List<Vertex> getVertices();
 
     /**
      * Adds the specified vertex to the graph. If the vertex already
@@ -47,6 +53,15 @@ public interface Graph {
      * @param vertex Vertex to be removed.
      */
     void removeVertex(Vertex vertex);
+
+    /**
+     * Lists all the edges of the given vertex.
+     * @param vertex Vertex to evaluate.
+     * @return Returns the list of the edges.
+     * @throws VertexNotFoundException  Throws this exception if the
+     *         given vertex does not exist in the graph.
+     */
+    List<Edge> getEdges(Vertex vertex) throws VertexNotFoundException;
 
     /**
      * Adds an edge connecting 2 vertices to the graph. If the edge
@@ -68,6 +83,19 @@ public interface Graph {
     void removeEdge(Vertex origin, Vertex destination) throws VertexNotFoundException;
 
     /**
+     * Given an origin and a destination vertex this method finds
+     * a path between them.
+     * @param origin Origin vertex.
+     * @param destination Destination vertex.
+     * @return Returns a list containing the vertices of the path
+     *         between the 2 vertices. If no path can be found this
+     *         function returns a null list.
+     * @throws VertexNotFoundException  Throws this exception if the
+     *         any of the specified vertices does not exist.
+     */
+    //List<Vertex> findPath(Vertex origin, Vertex destination) throws VertexNotFoundException;
+
+    /**
      * This method iterates the graph using the Depth First Search
      * algorithm.
      * @param startingVertex Initial vertex from where the iteration
@@ -78,7 +106,7 @@ public interface Graph {
      */
     default List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !isVertexInGraph(startingVertex)) {
+        if ( !contains(startingVertex)) {
             throw new VertexNotFoundException();
         }
 
@@ -121,7 +149,7 @@ public interface Graph {
      */
     default List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !isVertexInGraph(startingVertex)) {
+        if ( !contains(startingVertex)) {
             throw new VertexNotFoundException();
         }
 
