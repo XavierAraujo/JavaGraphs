@@ -135,28 +135,6 @@ abstract class AdjacentListGraph implements Graph {
         return vertices;
     }
 
-    private List<Vertex> recursiveDepthFirstSearch(Vertex vertex, HashSet<Vertex> visitationMap) throws VertexNotFoundException
-    {
-        List<Vertex> vertices = new ArrayList<>();
-
-        // Add current vertex and mark it as visited.
-        vertices.add(vertex);
-        visitationMap.add(vertex);
-
-        List<Vertex> neighbors = getNeighbors(vertex);
-        for (Vertex neighbor: neighbors)
-        {
-            if (visitationMap.contains(neighbor)) {
-                // This vertex was already visited so we don't need to visit again
-                continue;
-            }
-            List<Vertex> neighborVertices = recursiveDepthFirstSearch(neighbor, visitationMap);
-            vertices.addAll(neighborVertices);
-        }
-
-        return vertices;
-    }
-
     public List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
     {
         if ( !isVertexInGraph(startingVertex)) {
