@@ -97,16 +97,12 @@ public interface Graph {
             visitationMap.add(vertex);
             vertices.add(vertex);
 
-            List<Vertex> neighbors = getNeighbors(vertex);
-
             // Use an iterator to iterate the vertex list in reverse order
-            // to consider the most first neighbors being inserted.
+            // to begin by analyze the first neighbors being inserted.
+            List<Vertex> neighbors = getNeighbors(vertex);
             ListIterator it = neighbors.listIterator(neighbors.size());
             while (it.hasPrevious()) {
                 Vertex neighbor = (Vertex) it.previous();
-                if (! visitationMap.contains(vertex)) {
-                    continue;
-                }
                 visitationStack.push(neighbor);
             }
         }
