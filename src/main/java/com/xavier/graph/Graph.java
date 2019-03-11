@@ -93,7 +93,42 @@ public interface Graph {
      * @throws VertexNotFoundException  Throws this exception if the
      *         any of the specified vertices does not exist.
      */
+    // TODO: Check best way to create an abstraction
     //List<Vertex> findPath(Vertex origin, Vertex destination) throws VertexNotFoundException;
+
+    /**
+     * This method returns a depth first iterator to enable to iterate
+     * the graph.
+     * @param startingVertex Initial vertex from where the iteration
+     *                       should begin.
+     * @return Returns the iterator
+     * @throws VertexNotFoundException Throws this exception if the
+     *          starting vertex is not found.
+     */
+    default Iterator<Vertex> depthFirstIterator(Vertex startingVertex) throws VertexNotFoundException {
+        if ( !contains(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        return new DepthFirstIterator(this, startingVertex);
+    }
+
+    /**
+     * This method returns a breadth first iterator to enable to iterate
+     * the graph.
+     * @param startingVertex Initial vertex from where the iteration
+     *                       should begin.
+     * @return Returns the iterator
+     * @throws VertexNotFoundException Throws this exception if the
+     *          starting vertex is not found.
+     */
+    default Iterator<Vertex> breadthFirstIterator(Vertex startingVertex) throws VertexNotFoundException {
+        if ( !contains(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
+        return new BreadthFirstIterator(this, startingVertex);
+    }
 
     /**
      * This method iterates the graph using the Depth First Search
@@ -111,28 +146,10 @@ public interface Graph {
         }
 
         List<Vertex> vertices = new ArrayList<>();
-        HashSet<Vertex> visitationMap = new HashSet<>();
-        ArrayDeque<Vertex> visitationStack = new ArrayDeque<>();
 
-        visitationStack.push(startingVertex);
-        while (visitationStack.size() > 0)
-        {
-            Vertex vertex = visitationStack.pop();
-            if (visitationMap.contains(vertex)) {
-                continue;
-            }
-
-            visitationMap.add(vertex);
-            vertices.add(vertex);
-
-            // Use an iterator to iterate the vertex list in reverse order
-            // to begin by analyze the first neighbors being inserted.
-            List<Vertex> neighbors = getNeighbors(vertex);
-            ListIterator it = neighbors.listIterator(neighbors.size());
-            while (it.hasPrevious()) {
-                Vertex neighbor = (Vertex) it.previous();
-                visitationStack.push(neighbor);
-            }
+        Iterator<Vertex> it = depthFirstIterator(startingVertex);
+        while (it.hasNext()) {
+            vertices.add(it.next());
         }
 
         return vertices;
@@ -154,26 +171,10 @@ public interface Graph {
         }
 
         List<Vertex> vertices = new ArrayList<>();
-        HashSet<Vertex> visitationMap = new HashSet<>();
-        ArrayDeque<Vertex> visitationQueue = new ArrayDeque<>();
 
-        visitationQueue.add(startingVertex);
-        visitationMap.add(startingVertex);
-
-        while (visitationQueue.size() > 0)
-        {
-            Vertex vertex = visitationQueue.pollFirst();
-            vertices.add(vertex);
-
-            List<Vertex> neighbors = getNeighbors(vertex);
-            for(Vertex neighbor : neighbors)
-            {
-                if (!visitationMap.contains(neighbor)) {
-                    // Only add vertices which were not yet added to the queue
-                    visitationQueue.add(neighbor);
-                    visitationMap.add(neighbor);
-                }
-            }
+        Iterator<Vertex> it = breadthFirstIterator(startingVertex);
+        while (it.hasNext()) {
+            vertices.add(it.next());
         }
 
         return vertices;
