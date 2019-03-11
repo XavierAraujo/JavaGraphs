@@ -2,23 +2,28 @@ package com.xavier.graph;
 
 import java.util.*;
 
+/**
+ * This class implements a breadth first graph iterator. It uses
+ * an auxiliary queue (FIFO: First-In-First-Out) to manage the order
+ * in which the nodes are iterated.
+ */
 public class BreadthFirstIterator implements Iterator<Vertex> {
 
     private Graph graph;
-    private HashSet<Vertex> visitedVertices;
-    private ArrayDeque<Vertex> visitationQueue;
+    private HashSet<Vertex> iteratedVertices;
+    private ArrayDeque<Vertex> iterationQueue;
 
     private Vertex next;
 
     BreadthFirstIterator(Graph graph, Vertex startingVertex)
     {
         this.graph = graph;
-        this.visitedVertices = new HashSet<>();
-        this.visitationQueue = new ArrayDeque<>();
+        this.iteratedVertices = new HashSet<>();
+        this.iterationQueue = new ArrayDeque<>();
 
         this.next = startingVertex;
-        addNeighborsToVisitationQueue(startingVertex);
-        visitedVertices.add(startingVertex);
+        addNeighborsToIterationQueue(startingVertex);
+        iteratedVertices.add(startingVertex);
     }
 
     public boolean hasNext() {
@@ -34,17 +39,17 @@ public class BreadthFirstIterator implements Iterator<Vertex> {
 
     private Vertex getNextVertex()
     {
-        Vertex vertex = visitationQueue.pollFirst();
+        Vertex vertex = iterationQueue.pollFirst();
         if (vertex == null) {
             return null;
         }
 
-        addNeighborsToVisitationQueue(vertex);
-        visitedVertices.add(vertex);
+        addNeighborsToIterationQueue(vertex);
+        iteratedVertices.add(vertex);
         return vertex;
     }
 
-    private void addNeighborsToVisitationQueue(Vertex vertex)
+    private void addNeighborsToIterationQueue(Vertex vertex)
     {
         List<Vertex> neighbors = null;
         try {
@@ -56,10 +61,10 @@ public class BreadthFirstIterator implements Iterator<Vertex> {
 
         for(Vertex neighbor : neighbors)
         {
-            if (!visitedVertices.contains(neighbor)) {
+            if (!iteratedVertices.contains(neighbor)) {
                 // Only add vertices which were not yet added to the queue
-                visitationQueue.add(neighbor);
-                visitedVertices.add(neighbor);
+                iterationQueue.add(neighbor);
+                iteratedVertices.add(neighbor);
             }
         }
     }
