@@ -139,7 +139,7 @@ public interface Graph {
      * @throws VertexNotFoundException Throws this exception if the
      *          starting vertex is not found.
      */
-    default List<Vertex> depthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    default List<Vertex> depthFirstIteration(Vertex startingVertex) throws VertexNotFoundException
     {
         if ( !contains(startingVertex)) {
             throw new VertexNotFoundException();
@@ -164,7 +164,7 @@ public interface Graph {
      * @throws VertexNotFoundException Throws this exception if the
      *          starting vertex is not found.
      */
-    default List<Vertex> breadthFirstSearch(Vertex startingVertex) throws VertexNotFoundException
+    default List<Vertex> breadthFirstIteration(Vertex startingVertex) throws VertexNotFoundException
     {
         if ( !contains(startingVertex)) {
             throw new VertexNotFoundException();

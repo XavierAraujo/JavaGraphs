@@ -2,9 +2,6 @@ package com.xavier.graph;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,7 +151,7 @@ class UndirectedAdjacentListGraphTest {
         // Test Depth First Search
         //
 
-        List<Vertex> vertices = graph.depthFirstSearch(v0);
+        List<Vertex> vertices = graph.depthFirstIteration(v0);
         assertEquals(9, vertices.size());
 
         assertEquals(0, vertices.get(0).getId());
@@ -171,11 +168,11 @@ class UndirectedAdjacentListGraphTest {
         // so it should not appear when the DFS algorithm starts
         // on the vertex 0
 
-        vertices = graph.depthFirstSearch(v4);
+        vertices = graph.depthFirstIteration(v4);
         assertEquals(1, vertices.size());
         assertEquals(4, vertices.get(0).getId());
 
-        vertices = graph.depthFirstSearch(v2);
+        vertices = graph.depthFirstIteration(v2);
         assertEquals(9, vertices.size());
 
         assertEquals(2, vertices.get(0).getId());
@@ -192,7 +189,7 @@ class UndirectedAdjacentListGraphTest {
         // Test Breadth First Search
         //
 
-        vertices = graph.breadthFirstSearch(v0);
+        vertices = graph.breadthFirstIteration(v0);
         assertEquals(9, vertices.size());
 
         assertEquals(0, vertices.get(0).getId());
@@ -205,11 +202,11 @@ class UndirectedAdjacentListGraphTest {
         assertEquals(1, vertices.get(7).getId());
         assertEquals(2, vertices.get(8).getId());
 
-        vertices = graph.breadthFirstSearch(v4);
+        vertices = graph.breadthFirstIteration(v4);
         assertEquals(1, vertices.size());
         assertEquals(4, vertices.get(0).getId());
 
-        vertices = graph.breadthFirstSearch(v2);
+        vertices = graph.breadthFirstIteration(v2);
         assertEquals(9, vertices.size());
 
         assertEquals(2, vertices.get(0).getId());
