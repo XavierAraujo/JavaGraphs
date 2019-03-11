@@ -16,7 +16,7 @@ public class DepthFirstIterator implements Iterator<Vertex> {
     private Vertex next;
 
     /**
-     * Creates a depth first iterator . It assumes that the specified
+     * Creates a depth first graph iterator. It assumes that the specified
      * starting vertex belongs to the given graph and so it does not
      * do any kind of validation.
      * @param graph Graph to be iterated.
@@ -48,7 +48,7 @@ public class DepthFirstIterator implements Iterator<Vertex> {
     /**
      * This method fetches the next vertex to be iterated, marks it
      * as already iterated and adds its neighbors to the iteration
-     * stack
+     * stack. The stack is a FILO data structure (First-In-Last-Out).
      * @return Returns the next vertex to be iterated.
      */
     private Vertex getNextVertex()
@@ -64,11 +64,12 @@ public class DepthFirstIterator implements Iterator<Vertex> {
     }
 
     /**
-     * This method fetches the next vertex to be iterated
-     * from the auxiliary stack and sets it as iterated. It
-     * discards vertices which were already iterated. A vertex
-     * can be added multiple times to the iteration stack if it
-     * is neighbor from multiple vertices.
+     * This method fetches the next vertex to be iterated from
+     * the auxiliary stack and sets it as iterated. It discards
+     * vertices which were already iterated. A vertex can be
+     * added multiple times to the iteration stack if it is
+     * neighbor from multiple vertices. The stack is a FILO data
+     * structure (First-In-Last-Out).
      * @return Returns the next non iterated vertex from the stack.
      */
     private Vertex popNonIteratedVertexFromStack()
@@ -86,7 +87,7 @@ public class DepthFirstIterator implements Iterator<Vertex> {
 
     /**
      * Adds the neighbors of the specified vertex to the iteration
-     * stack
+     * stack. The stack is a FILO data structure (First-In-Last-Out).
      * @param vertex Vertex to be considered.
      */
     private void addNeighborsToIterationStack(Vertex vertex)

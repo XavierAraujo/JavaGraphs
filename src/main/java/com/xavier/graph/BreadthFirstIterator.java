@@ -15,6 +15,14 @@ public class BreadthFirstIterator implements Iterator<Vertex> {
 
     private Vertex next;
 
+    /**
+     * Creates a breadth first graph iterator. It assumes that the specified
+     * starting vertex belongs to the given graph and so it does not
+     * do any kind of validation.
+     * @param graph Graph to be iterated.
+     * @param startingVertex Vertex from which the iteration should be
+     *                       started.
+     */
     BreadthFirstIterator(Graph graph, Vertex startingVertex)
     {
         this.graph = graph;
@@ -37,6 +45,12 @@ public class BreadthFirstIterator implements Iterator<Vertex> {
         return nextVertex;
     }
 
+    /**
+     * This method fetches the next vertex to be iterated, marks it
+     * as already iterated and adds its neighbors to the iteration
+     * queue. The queue is a FIFO data structure (First-In-First-Out)
+     * @return Returns the next vertex to be iterated.
+     */
     private Vertex getNextVertex()
     {
         Vertex vertex = iterationQueue.pollFirst();
@@ -48,7 +62,11 @@ public class BreadthFirstIterator implements Iterator<Vertex> {
         iteratedVertices.add(vertex);
         return vertex;
     }
-
+    /**
+     * Adds the neighbors of the specified vertex to the iteration
+     * queue. The queue is a FIFO data structure (First-In-First-Out)
+     * @param vertex Vertex to be considered.
+     */
     private void addNeighborsToIterationQueue(Vertex vertex)
     {
         List<Vertex> neighbors = null;
