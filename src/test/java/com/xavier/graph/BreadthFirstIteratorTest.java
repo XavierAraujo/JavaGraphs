@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BreadthFirstIteratorTest {
 
     @Test
-    void basicTopologyTest() throws VertexNotFoundException
+    void breadthFirstIteratorTest() throws VertexNotFoundException
     {
         UndirectedAdjacentListGraph graph = new UndirectedAdjacentListGraph();
 
@@ -76,5 +76,8 @@ class BreadthFirstIteratorTest {
         assertEquals(9, it.next().getId());
         assertEquals(1, it.next().getId());
         assertNull(it.next());
+
+        Vertex v999 = new Vertex(999);
+        assertThrows(VertexNotFoundException.class, () -> new BreadthFirstIterator(graph, v999));
     }
 }

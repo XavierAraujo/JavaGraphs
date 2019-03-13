@@ -16,15 +16,20 @@ public class DepthFirstIterator implements Iterator<Vertex> {
     private Vertex next;
 
     /**
-     * Creates a depth first graph iterator. It assumes that the specified
-     * starting vertex belongs to the given graph and so it does not
-     * do any kind of validation.
+     * Creates a depth first graph iterator that starts iterating
+     * from the specified starting vertex.
      * @param graph Graph to be iterated.
      * @param startingVertex Vertex from which the iteration should be
      *                       started.
+     * @throws VertexNotFoundException Throws this exception if the
+     *          starting vertex is not found.
      */
-    DepthFirstIterator(Graph graph, Vertex startingVertex)
+    DepthFirstIterator(Graph graph, Vertex startingVertex) throws VertexNotFoundException
     {
+        if ( !graph.contains(startingVertex)) {
+            throw new VertexNotFoundException();
+        }
+
         this.graph = graph;
         this.iteratedVertices = new HashSet<>();
         this.iterationStack = new ArrayDeque<>();

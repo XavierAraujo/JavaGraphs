@@ -106,10 +106,6 @@ public interface Graph {
      *          starting vertex is not found.
      */
     default Iterator<Vertex> depthFirstIterator(Vertex startingVertex) throws VertexNotFoundException {
-        if ( !contains(startingVertex)) {
-            throw new VertexNotFoundException();
-        }
-
         return new DepthFirstIterator(this, startingVertex);
     }
 
@@ -123,10 +119,6 @@ public interface Graph {
      *          starting vertex is not found.
      */
     default Iterator<Vertex> breadthFirstIterator(Vertex startingVertex) throws VertexNotFoundException {
-        if ( !contains(startingVertex)) {
-            throw new VertexNotFoundException();
-        }
-
         return new BreadthFirstIterator(this, startingVertex);
     }
 
@@ -141,10 +133,6 @@ public interface Graph {
      */
     default List<Vertex> depthFirstIteration(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !contains(startingVertex)) {
-            throw new VertexNotFoundException();
-        }
-
         List<Vertex> vertices = new ArrayList<>();
 
         Iterator<Vertex> it = depthFirstIterator(startingVertex);
@@ -166,10 +154,6 @@ public interface Graph {
      */
     default List<Vertex> breadthFirstIteration(Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !contains(startingVertex)) {
-            throw new VertexNotFoundException();
-        }
-
         List<Vertex> vertices = new ArrayList<>();
 
         Iterator<Vertex> it = breadthFirstIterator(startingVertex);

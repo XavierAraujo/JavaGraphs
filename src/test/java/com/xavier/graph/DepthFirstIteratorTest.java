@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DepthFirstIteratorTest {
 
     @Test
-    void basicTopologyTest() throws VertexNotFoundException
+    void depthFirstIteratorTest() throws VertexNotFoundException
     {
         UndirectedAdjacentListGraph graph = new UndirectedAdjacentListGraph();
 
@@ -76,5 +76,8 @@ class DepthFirstIteratorTest {
         assertEquals(7, it.next().getId());
         assertEquals(9, it.next().getId());
         assertNull(it.next());
+
+        Vertex v999 = new Vertex(999);
+        assertThrows(VertexNotFoundException.class, () -> new DepthFirstIterator(graph, v999));
     }
 }
