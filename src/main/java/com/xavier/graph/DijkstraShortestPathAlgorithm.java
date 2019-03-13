@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DijkstraShortestPathAlgorithm {
+class DijkstraShortestPathAlgorithm {
 
     private Graph graph;
 
@@ -29,13 +29,13 @@ public class DijkstraShortestPathAlgorithm {
             throw new VertexNotFoundException();
         }
 
-        // TODO: Try to use Fibonacci Heap to allow efficient min retrieval and weight update
-        HashMap<Vertex, DijkstraInfo> verticesMap = new HashMap<>();
+        // TODO: Try to use Fibonacci Heap or Pairing Heap to allow efficient min retrieval and weight update
+        HashMap<Vertex, DijkstraVertexInfo> verticesMap = new HashMap<>();
 
         // Initialize unvisited vertices and update weight of origin node to 0
         List<Vertex> vertices = graph.getVertices();
         for(Vertex vertex : vertices) {
-            verticesMap.put(vertex, new DijkstraInfo());
+            verticesMap.put(vertex, new DijkstraVertexInfo());
         }
 
         verticesMap.get(origin).setWeight(0);
@@ -49,7 +49,7 @@ public class DijkstraShortestPathAlgorithm {
             List<Edge> edges = graph.getEdges(currentVertex);
             for (Edge edge : edges) {
                 Vertex neighbor = edge.destination;
-                DijkstraInfo neighborInfo = verticesMap.get(neighbor);
+                DijkstraVertexInfo neighborInfo = verticesMap.get(neighbor);
 
                 int neighborWeight = neighborInfo.getWeight();
                 int newWeight = currentVertexWeight + ((WeightedEdge) edge).getWeight();
@@ -74,13 +74,13 @@ public class DijkstraShortestPathAlgorithm {
     }
 
 
-    private Vertex getMinWeightUnvisitedVertex(HashMap<Vertex, DijkstraInfo> verticesMap)
+    private Vertex getMinWeightUnvisitedVertex(HashMap<Vertex, DijkstraVertexInfo> verticesMap)
     {
         // TODO: Very inefficient. Change to Fibonacci Heap
         int minWeight = Integer.MAX_VALUE;
         Vertex vertex = null;
 
-        for (Map.Entry<Vertex, DijkstraInfo> entry : verticesMap.entrySet()) {
+        for (Map.Entry<Vertex, DijkstraVertexInfo> entry : verticesMap.entrySet()) {
             if (entry.getValue().getIsVisited()) {
                 continue; // Only consider unvisited nodes
             }
@@ -95,7 +95,7 @@ public class DijkstraShortestPathAlgorithm {
         return vertex;
     }
 
-    private WeightedGraphPath buildPathToDestination(HashMap<Vertex, DijkstraInfo> verticesMap, Vertex destination)
+    private WeightedGraphPath buildPathToDestination(HashMap<Vertex, DijkstraVertexInfo> verticesMap, Vertex destination)
     {
         if (verticesMap.get(destination).getWeight() == Integer.MAX_VALUE) {
             return null;
@@ -113,13 +113,13 @@ public class DijkstraShortestPathAlgorithm {
         return new WeightedGraphPath(pathWeight, verticesPath);
     }
 
-    class DijkstraInfo
+    class DijkstraVertexInfo
     {
         private boolean isVisited;
         private int weight;
         private Vertex previousVertex;
 
-        DijkstraInfo()
+        DijkstraVertexInfo()
         {
             isVisited = false;
             weight = Integer.MAX_VALUE;

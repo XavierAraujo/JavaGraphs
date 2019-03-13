@@ -1,6 +1,6 @@
 package com.xavier.graph;
 
-public class UndirectedAdjacentListGraph extends AdjacentListGraph {
+class UndirectedAdjacentListGraph extends AdjacentListGraph {
 
     /**
      * This method builds 2 edges (vertex1->vertex2 and
