@@ -13,4 +13,12 @@ public class WeightedUndirectedAdjacentListGraph extends AdjacentListGraph {
 
         return 0;
     }
+
+    void addEge(Edge edge) throws InvalidGraphEdgeException, VertexNotFoundException
+    {
+        if (!(edge instanceof WeightedEdge)) {
+            throw new InvalidGraphEdgeException("In a weighted graph all edges must be weighted");
+        }
+        super.addEdge(edge);
+    }
 }

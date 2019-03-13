@@ -89,6 +89,9 @@ abstract class AdjacentListGraph implements Graph {
         }
 
         List<Edge> vertexEdges = connections.get(edge.origin);
+        if (existEdgeForDestination(vertexEdges, edge.destination)) {
+            return;
+        }
         vertexEdges.add(edge);
     }
 
@@ -100,11 +103,24 @@ abstract class AdjacentListGraph implements Graph {
         }
 
         List<Edge> originEdges = connections.get(origin);
-        for (Edge edge : originEdges) {
+        Edge edge = getEdgeForDestination(originEdges, destination);
+        if (edge != null) {
+            originEdges.remove(edge);
+        }
+    }
+
+    private boolean existEdgeForDestination(List<Edge> edges, Vertex destination)
+    {
+        return (getEdgeForDestination(edges, destination) != null);
+    }
+
+    private Edge getEdgeForDestination(List<Edge> edges, Vertex destination)
+    {
+        for (Edge edge : edges) {
             if (edge.destination.equals(destination)) {
-                originEdges.remove(edge);
-                break;
+                return edge;
             }
         }
+        return null;
     }
 }
