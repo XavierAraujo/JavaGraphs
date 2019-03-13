@@ -13,7 +13,15 @@ public class WeightedDirectedAdjacentListGraph extends DirectedAdjacentListGraph
      */
     void addWeightedEdge(Vertex origin, Vertex destination, int weight) throws VertexNotFoundException
     {
-        addEdge(new WeightedEdge(origin, destination, weight));
+        super.addEdge(new WeightedEdge(origin, destination, weight));
+    }
+
+    void addEge(Edge edge) throws InvalidGraphEdgeException, VertexNotFoundException
+    {
+        if (!(edge instanceof WeightedEdge)) {
+            throw new InvalidGraphEdgeException("In a weighted graph all edges must be weighted");
+        }
+        super.addEdge(edge);
     }
 
     /**
