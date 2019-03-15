@@ -11,6 +11,9 @@ class UndirectedAdjacentListGraphTest {
         UndirectedAdjacentListGraph graph = new UndirectedAdjacentListGraph();
         assertNotNull(graph);
 
+        assertFalse(graph.isDirected());
+        assertFalse(graph.isWeighted());
+
         Vertex v0 = new Vertex(0);
         Vertex v1 = new Vertex(1);
         Vertex v2 = new Vertex(2);

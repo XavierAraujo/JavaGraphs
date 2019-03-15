@@ -5,6 +5,29 @@ import java.util.*;
 public interface Graph {
 
     /**
+     * This method allows to know if a given graph is directed. In a
+     * directed graph if there is an edge from Vertex A to Vertex B it
+     * does not mean that there is an edge from Vertex B to Vertex A.
+     *
+     * @return Returns true if the graph is directed and false otherwise.
+     */
+    default boolean isDirected() {
+        return false;
+    }
+
+    /**
+     * This method allows to know if a given graph is weighted. In a
+     * weighted graph every edge of the graph has an weight associated
+     * with it. This weight could represent for example the cost of
+     * traversing from one Vertex to another.
+     *
+     * @return Returns true if the graph is weighted and false otherwise.
+     */
+    default boolean isWeighted() {
+        return false;
+    }
+
+    /**
      * This method checks if a given vertex is present in the graph.
      * @param vertex Vertex to be evaluated.
      * @return Returns true if the given vertex is present in the graph

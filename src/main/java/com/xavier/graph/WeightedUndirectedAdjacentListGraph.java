@@ -2,6 +2,10 @@ package com.xavier.graph;
 
 public class WeightedUndirectedAdjacentListGraph extends AdjacentListGraph {
 
+    @Override
+    public boolean isWeighted() {
+        return true;
+    }
 
     int addWeightedEdge(Vertex vertex1, Vertex vertex2, int weight) throws VertexNotFoundException
     {

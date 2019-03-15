@@ -2,6 +2,11 @@ package com.xavier.graph;
 
 class DirectedAdjacentListGraph extends AdjacentListGraph {
 
+    @Override
+    public boolean isDirected() {
+        return true;
+    }
+
     /**
      * This method builds an edge between the given origin
      * vertex and destination vertex and adds it to the graph.

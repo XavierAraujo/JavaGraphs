@@ -11,6 +11,9 @@ class WeightedDirectedAdjacentListGraphTest {
         WeightedDirectedAdjacentListGraph graph = new WeightedDirectedAdjacentListGraph();
         assertNotNull(graph);
 
+        assertTrue(graph.isDirected());
+        assertTrue(graph.isWeighted());
+
         Vertex v0 = new Vertex(0);
         Vertex v1 = new Vertex(1);
         Vertex v2 = new Vertex(2);

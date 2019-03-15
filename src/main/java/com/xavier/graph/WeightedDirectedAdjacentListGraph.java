@@ -4,6 +4,11 @@ import java.util.*;
 
 public class WeightedDirectedAdjacentListGraph extends DirectedAdjacentListGraph {
 
+    @Override
+    public boolean isWeighted() {
+        return true;
+    }
+
     /**
      * This method builds a weighted edge between the given origin
      * vertex and destination vertex and adds it to the graph.
