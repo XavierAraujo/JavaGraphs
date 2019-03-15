@@ -45,7 +45,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.xavier.graph.JavaGraphs</mainClass>
+                            <mainClass>com.xavier.graphs.JavaGraphs</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
