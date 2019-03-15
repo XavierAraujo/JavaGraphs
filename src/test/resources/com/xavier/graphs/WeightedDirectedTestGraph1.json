@@ -19,9 +19,24 @@
       "weight": 2
     },
     {
-      "origin": { "id": 2 },
-      "destination": { "id": 1 },
-      "weight": 2
+      "origin": { "id": 1 },
+      "destination": { "id": 8 },
+      "weight": 10
+    },
+    {
+      "origin": { "id": 3 },
+      "destination": { "id": 5 },
+      "weight": 15
+    },
+    {
+      "origin": { "id": 5 },
+      "destination": { "id": 4 },
+      "weight": 9
+    },
+    {
+      "origin": { "id": 4 },
+      "destination": { "id": 5 },
+      "weight": 8
     }
   ]
 }

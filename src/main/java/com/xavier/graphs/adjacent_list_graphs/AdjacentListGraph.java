@@ -93,6 +93,11 @@ abstract class AdjacentListGraph implements Graph {
             throw new VertexNotFoundException();
         }
 
+        if (edge.origin.equals(edge.destination)) {
+            // Not accepted self-loops
+            return;
+        }
+
         List<Edge> vertexEdges = connections.get(edge.origin);
         if (existEdgeForDestination(vertexEdges, edge.destination)) {
             return;

@@ -18,8 +18,8 @@ class GraphJsonFileParserTest {
     private final static String TEST_FILES_DIR = "src/test/resources/com/xavier/graphs";
 
     @Test
-    void weightedDirectedGraph1Test() throws IOException, InvalidGraphFileException {
-
+    void weightedDirectedGraph1Test() throws IOException, InvalidGraphFileException
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         Graph graph = parser.fetchGraphFromFile(String.format("%s/WeightedDirectedTestGraph1.json", TEST_FILES_DIR));
 
@@ -46,8 +46,8 @@ class GraphJsonFileParserTest {
     }
 
     @Test
-    void directedGraph1Test() throws IOException, InvalidGraphFileException {
-
+    void directedGraph1Test() throws IOException, InvalidGraphFileException
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         Graph graph = parser.fetchGraphFromFile(String.format("%s/DirectedTestGraph1.json", TEST_FILES_DIR));
 
@@ -56,8 +56,8 @@ class GraphJsonFileParserTest {
     }
 
     @Test
-    void weightedUndirectedGraph1Test() throws IOException, InvalidGraphFileException {
-
+    void weightedUndirectedGraph1Test() throws IOException, InvalidGraphFileException
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         Graph graph = parser.fetchGraphFromFile(String.format("%s/WeightedUndirectedTestGraph1.json", TEST_FILES_DIR));
 
@@ -66,8 +66,8 @@ class GraphJsonFileParserTest {
     }
 
     @Test
-    void undirectedGraph1Test() throws IOException, InvalidGraphFileException {
-
+    void undirectedGraph1Test() throws IOException, InvalidGraphFileException
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         Graph graph = parser.fetchGraphFromFile(String.format("%s/UndirectedTestGraph1.json", TEST_FILES_DIR));
 
@@ -76,17 +76,28 @@ class GraphJsonFileParserTest {
     }
 
     @Test
-    void testEmptyJson() throws IOException, InvalidGraphFileException {
-
+    void testEmptyJson()
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         assertThrows(InvalidGraphFileException.class, () -> parser.fetchGraphFromFile(String.format("%s/Empty.json", TEST_FILES_DIR)));
-
     }
 
     @Test
-    void testInvalidJson() throws IOException, InvalidGraphFileException {
-
+    void testInvalidJson()
+    {
         GraphJsonFileParser parser = new GraphJsonFileParser();
         assertThrows(InvalidGraphFileException.class, () -> parser.fetchGraphFromFile(String.format("%s/Invalid.json", TEST_FILES_DIR)));
+    }
+
+    @Test
+    void testUndefinedJson() throws IOException, InvalidGraphFileException
+    {
+        GraphJsonFileParser parser = new GraphJsonFileParser();
+        Graph graph = parser.fetchGraphFromFile(String.format("%s/UndefinedTestGraph.json", TEST_FILES_DIR));
+
+        // By default if no IsDirected and no IsWeighted flag is defined on the
+        // JSON file it is assumed that it is a non weighted undirected graph.
+        assertTrue(graph instanceof UndirectedAdjacentListGraph);
+        assertEquals(8, graph.getVertices().size());
     }
 }

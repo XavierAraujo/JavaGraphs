@@ -41,7 +41,6 @@ public class GraphJsonFileParser implements GraphFileParser {
 
             }
             catch (JsonIOException | JsonSyntaxException exception){
-                exception.printStackTrace();
                 throw new InvalidGraphFileException("JSON file could not be correctly parsed");
             }
 
