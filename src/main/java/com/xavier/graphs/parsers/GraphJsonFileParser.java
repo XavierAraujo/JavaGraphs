@@ -1,6 +1,8 @@
 package com.xavier.graphs.parsers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.xavier.graphs.Edge;
 import com.xavier.graphs.Graph;
@@ -16,15 +18,32 @@ import java.util.List;
 
 public class GraphJsonFileParser implements GraphFileParser {
 
-    GraphJsonFileParser() {
-
-    }
-
+    /**
+     * This method receives a JSON file path name and it parses it
+     * to create a {@link Graph} object.
+     * @param filename Name of the file to parse.
+     * @return Returns a {@link Graph} object.
+     * @throws IOException When there was some I/O error reading the file.
+     * @throws InvalidGraphFileException When the file content could not be successfully parsed to a graph.
+     */
     @Override
-    public Graph fetchGraphFromFile(String filename) throws IOException, InvalidGraphFileException {
+    public Graph fetchGraphFromFile(String filename) throws IOException, InvalidGraphFileException
+    {
         try (JsonReader reader = new JsonReader(new FileReader(filename))) {
             Gson gson = new Gson();
-            JsonGraph jsonGraph = gson.fromJson(reader, JsonGraph.class);
+            JsonGraph jsonGraph;
+
+            try {
+                jsonGraph = gson.fromJson(reader, JsonGraph.class);
+                if (jsonGraph == null) {
+                    throw new InvalidGraphFileException("Empty JSON file");
+                }
+
+            }
+            catch (JsonIOException | JsonSyntaxException | InvalidGraphFileException exception){
+                throw new InvalidGraphFileException("JSON file could not be correctly parsed");
+            }
+
             return jsonGraph.toGraph();
         }
     }
@@ -32,13 +51,12 @@ public class GraphJsonFileParser implements GraphFileParser {
     /**
      * This class is used by GSON when parsing a graph from a JSON file.
      */
-    static class JsonGraph {
-
+    static class JsonGraph
+    {
         private boolean isDirected;
         private boolean isWeighted;
         private List<JsonGraphVertex> vertices;
         private List<JsonGraphEdge> edges;
-
 
         Graph toGraph() throws InvalidGraphFileException
         {
@@ -86,11 +104,12 @@ public class GraphJsonFileParser implements GraphFileParser {
     /**
      * This class is used by GSON when parsing a vertex from a JSON file.
      */
-    static class JsonGraphVertex {
-
+    static class JsonGraphVertex
+    {
         private int id;
 
-        Vertex toVertex() {
+        Vertex toVertex()
+        {
             return new Vertex(id);
         }
     }
@@ -98,8 +117,8 @@ public class GraphJsonFileParser implements GraphFileParser {
     /**
      * This class is used by GSON when parsing an edge from a JSON file.
      */
-    static class JsonGraphEdge {
-
+    static class JsonGraphEdge
+    {
         private JsonGraphVertex origin;
         private JsonGraphVertex destination;
         private int weight;
