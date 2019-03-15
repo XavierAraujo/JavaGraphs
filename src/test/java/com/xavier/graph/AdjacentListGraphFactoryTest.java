@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdjacentListGraphFactoryTest {
 
     @Test
-    void adjacentListGraphFactoryTest() throws VertexNotFoundException
+    void adjacentListGraphFactoryTest()
     {
         AdjacentListGraphFactory factory = new AdjacentListGraphFactory();
 

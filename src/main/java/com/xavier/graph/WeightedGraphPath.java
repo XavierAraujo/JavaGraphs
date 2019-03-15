@@ -1,6 +1,5 @@
 package com.xavier.graph;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WeightedGraphPath {
@@ -24,7 +23,7 @@ public class WeightedGraphPath {
     @Override
     public String toString()
     {
-        if (path != null || path.size() == 0) {
+        if (path == null || path.size() == 0) {
             return "Empty Path";
         }
 
