@@ -26,7 +26,7 @@ public class DepthFirstIterator implements Iterator<Vertex> {
      */
     DepthFirstIterator(Graph graph, Vertex startingVertex) throws VertexNotFoundException
     {
-        if ( !graph.contains(startingVertex)) {
+        if ( !graph.containsVertex(startingVertex)) {
             throw new VertexNotFoundException();
         }
 
@@ -99,7 +99,7 @@ public class DepthFirstIterator implements Iterator<Vertex> {
     {
         List<Vertex> neighbors = null;
         try {
-            neighbors = graph.getNeighbors(vertex);
+            neighbors = graph.getVertexNeighbors(vertex);
         } catch (VertexNotFoundException e) {
             e.printStackTrace();
             return;

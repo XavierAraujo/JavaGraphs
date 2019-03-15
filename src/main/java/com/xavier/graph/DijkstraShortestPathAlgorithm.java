@@ -25,7 +25,7 @@ class DijkstraShortestPathAlgorithm {
      */
     WeightedGraphPath findMinCostPath(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if (!graph.contains(origin) || !graph.contains(destination)) {
+        if (!graph.containsVertex(origin) || !graph.containsVertex(destination)) {
             throw new VertexNotFoundException();
         }
 

@@ -11,15 +11,15 @@ abstract class AdjacentListGraph implements Graph {
     }
 
 
-    public boolean contains(Vertex vertex)
+    public boolean containsVertex(Vertex vertex)
     {
         return connections.containsKey(vertex);
     }
 
-    public boolean isNeighbor(Vertex origin, Vertex destination) throws VertexNotFoundException
+    public boolean areVerticesNeighbors(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if ( !contains(origin) ||
-                !contains(destination)) {
+        if ( !containsVertex(origin) ||
+                !containsVertex(destination)) {
             throw new VertexNotFoundException();
         }
 
@@ -34,9 +34,9 @@ abstract class AdjacentListGraph implements Graph {
         return false;
     }
 
-    public List<Vertex> getNeighbors(Vertex vertex) throws VertexNotFoundException
+    public List<Vertex> getVertexNeighbors(Vertex vertex) throws VertexNotFoundException
     {
-        if (! contains(vertex)) {
+        if (! containsVertex(vertex)) {
             throw new VertexNotFoundException();
         }
 
@@ -56,7 +56,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public void addVertex(Vertex vertex)
     {
-        if (contains(vertex)) {
+        if (containsVertex(vertex)) {
             return;
         }
 
@@ -65,7 +65,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public void removeVertex(Vertex vertex)
     {
-        if (! contains(vertex)) {
+        if (! containsVertex(vertex)) {
             return;
         }
 
@@ -74,7 +74,7 @@ abstract class AdjacentListGraph implements Graph {
 
     public List<Edge> getEdges(Vertex vertex) throws VertexNotFoundException
     {
-        if (! contains(vertex)) {
+        if (! containsVertex(vertex)) {
             throw new VertexNotFoundException();
         }
 
@@ -83,8 +83,8 @@ abstract class AdjacentListGraph implements Graph {
 
     public void addEdge(Edge edge) throws VertexNotFoundException
     {
-        if ( !contains(edge.origin) ||
-                !contains(edge.destination)) {
+        if ( !containsVertex(edge.origin) ||
+                !containsVertex(edge.destination)) {
             throw new VertexNotFoundException();
         }
 
@@ -97,8 +97,8 @@ abstract class AdjacentListGraph implements Graph {
 
     public void removeEdge(Vertex origin, Vertex destination) throws VertexNotFoundException
     {
-        if ( !contains(origin) ||
-                !contains(destination)) {
+        if ( !containsVertex(origin) ||
+                !containsVertex(destination)) {
             throw new VertexNotFoundException();
         }
 

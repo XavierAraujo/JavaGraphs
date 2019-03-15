@@ -26,14 +26,14 @@ class GraphJsonFileParserTest {
         Vertex v7 = new Vertex(7);
         Vertex v8 = new Vertex(8);
 
-        assertTrue(graph.contains(v1));
-        assertTrue(graph.contains(v2));
-        assertTrue(graph.contains(v3));
-        assertTrue(graph.contains(v4));
-        assertTrue(graph.contains(v5));
-        assertTrue(graph.contains(v6));
-        assertTrue(graph.contains(v7));
-        assertTrue(graph.contains(v8));
+        assertTrue(graph.containsVertex(v1));
+        assertTrue(graph.containsVertex(v2));
+        assertTrue(graph.containsVertex(v3));
+        assertTrue(graph.containsVertex(v4));
+        assertTrue(graph.containsVertex(v5));
+        assertTrue(graph.containsVertex(v6));
+        assertTrue(graph.containsVertex(v7));
+        assertTrue(graph.containsVertex(v8));
 
     }
 }

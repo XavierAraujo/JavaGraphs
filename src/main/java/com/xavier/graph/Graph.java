@@ -8,7 +8,6 @@ public interface Graph {
      * This method allows to know if a given graph is directed. In a
      * directed graph if there is an edge from Vertex A to Vertex B it
      * does not mean that there is an edge from Vertex B to Vertex A.
-     *
      * @return Returns true if the graph is directed and false otherwise.
      */
     default boolean isDirected() {
@@ -20,7 +19,6 @@ public interface Graph {
      * weighted graph every edge of the graph has an weight associated
      * with it. This weight could represent for example the cost of
      * traversing from one Vertex to another.
-     *
      * @return Returns true if the graph is weighted and false otherwise.
      */
     default boolean isWeighted() {
@@ -33,7 +31,7 @@ public interface Graph {
      * @return Returns true if the given vertex is present in the graph
      *          and false otherwise.
      */
-    boolean contains(Vertex vertex);
+    boolean containsVertex(Vertex vertex);
 
     /**
      * Checks if there is a connection between the given vertices.
@@ -45,7 +43,7 @@ public interface Graph {
      *         of the vertices does not exist in the graph.
      *
      */
-    boolean isNeighbor(Vertex origin, Vertex destination) throws VertexNotFoundException;
+    boolean areVerticesNeighbors(Vertex origin, Vertex destination) throws VertexNotFoundException;
 
     /**
      * Lists all the neighbours of the given vertex.
@@ -54,7 +52,7 @@ public interface Graph {
      * @throws VertexNotFoundException  Throws this exception if the
      *         given vertex does not exist in the graph.
      */
-    List<Vertex> getNeighbors(Vertex vertex) throws VertexNotFoundException;
+    List<Vertex> getVertexNeighbors(Vertex vertex) throws VertexNotFoundException;
 
     /**
      * This method allows to retrieve a list containing all the graph's

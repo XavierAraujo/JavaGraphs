@@ -60,8 +60,8 @@ public class GraphJsonFileParser implements GraphFileParser {
             for (JsonGraphEdge graphEdge : this.edges) {
                 Edge edge = graphEdge.toEdge(this.isWeighted);
 
-                if (!graph.contains(edge.origin)
-                        || !graph.contains(edge.destination)) {
+                if (!graph.containsVertex(edge.origin)
+                        || !graph.containsVertex(edge.destination)) {
                     throw new InvalidGraphFileException("Edge connecting non existent vertices");
                 }
 
