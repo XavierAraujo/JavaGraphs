@@ -11,6 +11,7 @@ import com.xavier.graphs.exceptions.InvalidGraphFileException;
 import com.xavier.graphs.exceptions.VertexNotFoundException;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 
 public class GraphJsonFileParser implements GraphFileParser {
@@ -28,24 +29,42 @@ public class GraphJsonFileParser implements GraphFileParser {
         }
     }
 
+    /**
+     * This class is used by GSON when parsing a graph from a JSON file.
+     */
     static class JsonGraph {
 
-        boolean isDirected;
-        boolean isWeighted;
-        List<JsonGraphVertex> vertices;
-        List<JsonGraphEdge> edges;
+        private boolean isDirected;
+        private boolean isWeighted;
+        private List<JsonGraphVertex> vertices;
+        private List<JsonGraphEdge> edges;
 
-        JsonGraph(){ }
 
         Graph toGraph() throws InvalidGraphFileException
         {
             AdjacentListGraphFactory graphFactory = new AdjacentListGraphFactory();
             Graph graph = graphFactory.getGraph(isDirected, isWeighted);
 
-            for (JsonGraphVertex graphVertex : vertices) {
-                graph.addVertex(graphVertex.toVertex());
-            }
+            addVerticesToGraph(graph);
+            addEdgesToGraph(graph);
 
+            return graph;
+        }
+
+        private void addVerticesToGraph(Graph graph)
+        {
+            HashSet<Integer> verticesSet = new HashSet<>();
+            for (JsonGraphVertex jsonGraphVertex : vertices) {
+                if (verticesSet.contains(jsonGraphVertex.id)) {
+                    // Avoid adding repeated vertices to the graph.
+                    continue;
+                }
+                verticesSet.add(jsonGraphVertex.id);
+                graph.addVertex(jsonGraphVertex.toVertex());
+            }
+        }
+
+        private void addEdgesToGraph(Graph graph) throws InvalidGraphFileException {
             for (JsonGraphEdge graphEdge : edges) {
                 Edge edge = graphEdge.toEdge(isWeighted);
 
@@ -61,29 +80,29 @@ public class GraphJsonFileParser implements GraphFileParser {
                     e.printStackTrace();
                 }
             }
-
-            return graph;
         }
     }
 
+    /**
+     * This class is used by GSON when parsing a vertex from a JSON file.
+     */
     static class JsonGraphVertex {
 
-        int id;
-
-        JsonGraphVertex() { }
+        private int id;
 
         Vertex toVertex() {
             return new Vertex(id);
         }
     }
 
+    /**
+     * This class is used by GSON when parsing an edge from a JSON file.
+     */
     static class JsonGraphEdge {
 
-        JsonGraphVertex origin;
-        JsonGraphVertex destination;
-        int weight;
-
-        JsonGraphEdge() { }
+        private JsonGraphVertex origin;
+        private JsonGraphVertex destination;
+        private int weight;
 
         Edge toEdge(boolean isWeighted)
         {
