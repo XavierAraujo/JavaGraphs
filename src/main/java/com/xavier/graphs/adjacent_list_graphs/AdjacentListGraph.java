@@ -65,7 +65,7 @@ abstract class AdjacentListGraph implements Graph {
             return;
         }
 
-        connections.put(vertex, new ArrayList<Edge>());
+        connections.put(vertex, new ArrayList<>());
     }
 
     public void removeVertex(Vertex vertex)
