@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GraphJsonFileParserTest {
 
-    final static String TEST_FILES_DIR = "src/test/resources/com/xavier/graphs";
+    private final static String TEST_FILES_DIR = "src/test/resources/com/xavier/graphs";
 
     @Test
     void weightedDirectedGraph1Test() throws IOException, InvalidGraphFileException {
