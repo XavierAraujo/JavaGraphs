@@ -87,6 +87,18 @@ public interface Graph {
     List<Edge> getEdges(Vertex vertex) throws VertexNotFoundException;
 
     /**
+     * Lists all the edges going from the origin vertex to the destination
+     * vertex. It returns a list of edges because in multi-graphs we can have
+     * multiple edges connecting the same vertices.
+     * @param origin Origin vertex.
+     * @param destination Destination vertex.
+     * @return Returns the list of the edges between the specified vertices.
+     * @throws VertexNotFoundException  Throws this exception if the
+     *         given vertex does not exist in the graphs.
+     */
+    List<Edge> getEdgesBetweenVertices(Vertex origin, Vertex destination) throws VertexNotFoundException;
+
+    /**
      * Adds an edge connecting 2 vertices to the graphs. If the edge
      * already exists nothing is done.
      * @param edge Edge to be added

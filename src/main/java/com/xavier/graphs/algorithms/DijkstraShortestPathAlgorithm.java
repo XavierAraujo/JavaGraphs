@@ -52,8 +52,11 @@ public class DijkstraShortestPathAlgorithm {
             List<Edge> edges = graph.getEdges(currentVertex);
             for (Edge edge : edges) {
                 Vertex neighbor = edge.destination;
-                DijkstraVertexInfo neighborInfo = verticesMap.get(neighbor);
+                if (neighbor.equals(origin)) {
+                    continue; // Avoid self-loops
+                }
 
+                DijkstraVertexInfo neighborInfo = verticesMap.get(neighbor);
                 int neighborWeight = neighborInfo.getWeight();
                 int newWeight = currentVertexWeight + ((WeightedEdge) edge).getWeight();
 

@@ -86,6 +86,25 @@ abstract class AdjacentListGraph implements Graph {
         return connections.get(vertex);
     }
 
+    public List<Edge> getEdgesBetweenVertices(Vertex origin, Vertex destination) throws VertexNotFoundException
+    {
+        if ( !containsVertex(origin) ||
+                !containsVertex(destination)) {
+            throw new VertexNotFoundException();
+        }
+
+        ArrayList<Edge> edges = new ArrayList<>();
+        List<Edge> originEdges = connections.get(origin);
+
+        for (Edge edge : originEdges) {
+            if(edge.destination.equals(destination)) {
+                edges.add(edge);
+            }
+        }
+        return edges;
+    }
+
+
     public void addEdge(Edge edge) throws VertexNotFoundException
     {
         if ( !containsVertex(edge.origin) ||
