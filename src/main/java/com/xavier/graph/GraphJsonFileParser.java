@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
-import java.util.HashSet;
 import java.util.List;
 
 public class GraphJsonFileParser implements GraphFileParser {
@@ -14,35 +13,11 @@ public class GraphJsonFileParser implements GraphFileParser {
     }
 
     @Override
-    public Graph fetchGraphFromFile(String filename) throws FileNotFoundException, IOException {
+    public Graph fetchGraphFromFile(String filename) throws FileNotFoundException, IOException, InvalidGraphFileException {
         try (JsonReader reader = new JsonReader(new FileReader(filename));) {
             Gson gson = new Gson();
             JsonGraph jsonGraph = gson.fromJson(reader, JsonGraph.class);
-            AdjacentListGraphFactory graphFactory = new AdjacentListGraphFactory();
-            Graph graph = graphFactory.getGraph(jsonGraph.getIsDirected(), jsonGraph.getIsWeighted());
-
-            for (JsonGraphVertex graphVertex: jsonGraph.vertices) {
-                graph.addVertex(new Vertex(graphVertex.id));
-            }
-
-            for (JsonGraphEdge graphEdge: jsonGraph.edges) {
-                Vertex origin  = new Vertex(graphEdge.origin);
-                Vertex destination  = new Vertex(graphEdge.destination);
-
-                if(!graph.contains(new Vertex(graphEdge.origin)) ||
-                    !graph.contains(new Vertex(graphEdge.destination))){
-                        continue; // TODO: Create specific exception
-                }
-
-                try {
-                    graph.addEdge(new Edge(origin, destination));
-                } catch (VertexNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            return graph;
+            return jsonGraph.toGraph();
         }
     }
 
@@ -57,36 +32,48 @@ public class GraphJsonFileParser implements GraphFileParser {
 
         }
 
-        public boolean getIsDirected() {
+        boolean getIsDirected() {
             return isDirected;
         }
 
-        public void setIsDirected(boolean isDirected) {
-            this.isDirected = isDirected;
-        }
-
-        public boolean getIsWeighted() {
+        boolean getIsWeighted() {
             return isWeighted;
         }
 
-        public void setWeighted(boolean isWeighted) {
-            this.isWeighted = isWeighted;
-        }
-
-        public List<JsonGraphVertex> getVertices() {
+        List<JsonGraphVertex> getVertices() {
             return vertices;
         }
 
-        public void setVertices(List<JsonGraphVertex> vertices) {
-            this.vertices = vertices;
-        }
-
-        public List<JsonGraphEdge> getEdges() {
+        List<JsonGraphEdge> getEdges() {
             return edges;
         }
 
-        public void setEdges(List<JsonGraphEdge> edges) {
-            this.edges = edges;
+        Graph toGraph() throws InvalidGraphFileException
+        {
+            AdjacentListGraphFactory graphFactory = new AdjacentListGraphFactory();
+            Graph graph = graphFactory.getGraph(this.getIsDirected(), this.getIsWeighted());
+
+            for (JsonGraphVertex graphVertex : this.vertices) {
+                graph.addVertex(graphVertex.toVertex());
+            }
+
+            for (JsonGraphEdge graphEdge : this.edges) {
+                Edge edge = graphEdge.toEdge(this.isWeighted);
+
+                if (!graph.contains(edge.origin)
+                        || !graph.contains(edge.destination)) {
+                    throw new InvalidGraphFileException("Edge connecting non existent vertices");
+                }
+
+                try {
+                    graph.addEdge(edge);
+                } catch (VertexNotFoundException e) {
+                    // Not supposed to happen due to if statement above
+                    e.printStackTrace();
+                }
+            }
+
+            return graph;
         }
     }
 
@@ -98,40 +85,41 @@ public class GraphJsonFileParser implements GraphFileParser {
 
         }
 
-        public int getId() {
+        int getId() {
             return id;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        Vertex toVertex() {
+            return new Vertex(this.id);
         }
     }
 
     static class JsonGraphEdge {
 
-        int origin;
-        int destination;
+        JsonGraphVertex origin;
+        JsonGraphVertex destination;
         int weight;
 
         JsonGraphEdge() {
 
         }
 
-        public int getOrigin() {
+        JsonGraphVertex getOrigin() {
             return origin;
         }
 
-        public void setOrigin(int origin) {
-            this.origin = origin;
-        }
-
-        public int getDestination() {
+        JsonGraphVertex getDestination() {
             return destination;
         }
 
-        public void setDestination(int destination) {
-            this.destination = destination;
+        Edge toEdge(boolean isWeighted)
+        {
+            if (isWeighted) {
+                return new WeightedEdge(this.origin.toVertex(), this.destination.toVertex(), this.weight);
+            }
+            else{
+                return new Edge(this.origin.toVertex(), this.destination.toVertex());
+            }
         }
-
     }
 }

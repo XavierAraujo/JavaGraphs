@@ -5,6 +5,6 @@ import java.io.IOException;
 
 public interface GraphFileParser {
 
-    Graph fetchGraphFromFile(String file) throws FileNotFoundException, IOException;
+    Graph fetchGraphFromFile(String file) throws FileNotFoundException, IOException, InvalidGraphFileException;
 
 }

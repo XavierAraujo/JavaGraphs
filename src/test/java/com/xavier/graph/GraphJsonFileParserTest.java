@@ -10,7 +10,7 @@ class GraphJsonFileParserTest {
 
 
     @Test
-    void basicFileTest() throws IOException {
+    void basicFileTest() throws IOException, InvalidGraphFileException {
         GraphJsonFileParser parser = new GraphJsonFileParser();
 
         Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graph/test_graph1.json");

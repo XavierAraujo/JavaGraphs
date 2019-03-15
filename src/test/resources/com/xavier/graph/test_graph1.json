@@ -13,13 +13,13 @@
   ],
   "edges": [
     {
-      "origin": 1,
-      "destination": 2,
+      "origin": { "id": 1 },
+      "destination": { "id": 2 },
       "weight": 2
     },
     {
-      "origin": 2,
-      "destination": 1,
+      "origin": { "id": 2 },
+      "destination": { "id": 1 },
       "weight": 2
     }
   ]
