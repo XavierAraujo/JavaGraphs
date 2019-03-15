@@ -2,8 +2,11 @@ package com.xavier.graphs.parsers;
 
 import com.xavier.graphs.Graph;
 import com.xavier.graphs.Vertex;
+import com.xavier.graphs.adjacent_list_graphs.WeightedUndirectedAdjacentListGraph;
+import com.xavier.graphs.adjacent_list_graphs.UndirectedAdjacentListGraph;
+import com.xavier.graphs.adjacent_list_graphs.DirectedAdjacentListGraph;
+import com.xavier.graphs.adjacent_list_graphs.WeightedDirectedAdjacentListGraph;
 import com.xavier.graphs.exceptions.InvalidGraphFileException;
-import com.xavier.graphs.parsers.GraphJsonFileParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,12 +17,13 @@ class GraphJsonFileParserTest {
 
 
     @Test
-    void basicFileTest() throws IOException, InvalidGraphFileException {
+    void weightedDirectedGraph1Test() throws IOException, InvalidGraphFileException {
         GraphJsonFileParser parser = new GraphJsonFileParser();
 
-        Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graphs/test_graph1.json");
+        Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graphs/WeightedDirectedTestGraph1.json");
 
-        graph.getVertices();
+        assertTrue(graph instanceof WeightedDirectedAdjacentListGraph);
+        assertEquals(8, graph.getVertices().size());
 
         Vertex v1 = new Vertex(1);
         Vertex v2 = new Vertex(2);
@@ -38,6 +42,35 @@ class GraphJsonFileParserTest {
         assertTrue(graph.containsVertex(v6));
         assertTrue(graph.containsVertex(v7));
         assertTrue(graph.containsVertex(v8));
+    }
 
+    @Test
+    void directedGraph1Test() throws IOException, InvalidGraphFileException {
+        GraphJsonFileParser parser = new GraphJsonFileParser();
+
+        Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graphs/DirectedTestGraph1.json");
+
+        assertTrue(graph instanceof DirectedAdjacentListGraph);
+        assertEquals(8, graph.getVertices().size());
+    }
+
+    @Test
+    void weightedUndirectedGraph1Test() throws IOException, InvalidGraphFileException {
+        GraphJsonFileParser parser = new GraphJsonFileParser();
+
+        Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graphs/WeightedUndirectedTestGraph1.json");
+
+        assertTrue(graph instanceof WeightedUndirectedAdjacentListGraph);
+        assertEquals(8, graph.getVertices().size());
+    }
+
+    @Test
+    void undirectedGraph1Test() throws IOException, InvalidGraphFileException {
+        GraphJsonFileParser parser = new GraphJsonFileParser();
+
+        Graph graph = parser.fetchGraphFromFile("src/test/resources/com/xavier/graphs/UndirectedTestGraph1.json");
+
+        assertTrue(graph instanceof UndirectedAdjacentListGraph);
+        assertEquals(8, graph.getVertices().size());
     }
 }

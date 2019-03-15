@@ -4,7 +4,7 @@ import com.xavier.graphs.Edge;
 import com.xavier.graphs.Vertex;
 import com.xavier.graphs.exceptions.VertexNotFoundException;
 
-class DirectedAdjacentListGraph extends AdjacentListGraph {
+public class DirectedAdjacentListGraph extends AdjacentListGraph {
 
     @Override
     public boolean isDirected() {
